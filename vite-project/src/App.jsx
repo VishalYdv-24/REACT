@@ -2,42 +2,50 @@ import { useState } from 'react'
 // import './App.css'
 
 function App() {
+  const [initial, setInitial] = useState('');
+  const [data, setData] = useState([]);
 
-  const [inputValue,setInputValue] = useState('');
-  const [isClicked,setIsClicked] = useState(false);
-  const [store, setStore] = useState('');
-
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-    console.log(newValue);
+  const getInput = (event) => {
+    console.log(event.target.value);
+    setInitial(event.target.value);
   }
 
-  const submitEffect = () => {
-    setIsClicked(true);
-    setTimeout(() => {
-      setIsClicked(false)
-    }, 200);
+  const getData = () => {
+    console.log("Task:"+initial);
+    let s = [...data,initial];
+    setData(s);
+    setInitial('');
   }
-  const isSubmit = () => {
-    submitEffect();
-    const newInput = inputValue;
-    setStore(newInput);
-    console.log(`Name : ${newInput}`);
-  }
+
+
+ const deleteTask = (index) => {
+  let filterData = data.filter((curTask,indx) => {
+    return indx != index
+  })
+  setData(filterData)
+ }
+
   return (
-    <>
-    <div className='flex flex-col-reverse border-2 border-black h-dvh w-full justify-center items-center bg-green-200 '>
-      <div className='flex bg-slate-200 w-5/12 gap-x-2 px-2'>
-          <p className='font-bold '>Name : </p>
-          <input type="text" value={inputValue} onChange={handleInputChange} placeholder='Enter Name' className=' border-b-2 border-black h-1/8 bg-slate-200 w-3/4' />
-          <button onClick={isSubmit} value="Vishal"className={`px-2 ml-4 text-white font-bold ${isClicked? "bg-green-400" : "bg-sky-500"} hover:${isClicked? "bg-green-400" : "bg-sky-700"}` }>Submit</button>
+    <div className='h-dvh flex  items-center flex-col bg-background text-white '>
+      <div className='w-1/2 h-10 flex gap-x-10 justify-center items-center mt-40'>
+        <input type="text" placeholder='Enter Task' className='w-4/5 text-black border-b-2 border-pink-400 h-10 rounded-sm' onChange={getInput} value={initial}/>
+        <button onClick={getData} className=' h-10 bg-addButton p-2 rounded-lg'>Add Task</button>
       </div>
-      <div>
-          {store && <h1> Name : {store}</h1>}
+      <div className='flex flex-col w-1/2'>
+        {data.map ((curVal,index) => {
+          return (
+            <>
+            <div>
+              <div className='flex bg-taskColor rounded-lg my-2 h-10 justify-center items-center pr-7'>
+              <p className='m-3 '>{curVal}</p>
+              <button className='ml-auto hover:bg-hoverColor hover:text-black hover:text-bold hover:px-1 hover:rounded-xl' onClick={() => deleteTask(index)}>Delete</button>
+              </div>
+            </div>
+            </>
+          )
+        })}
       </div>
     </div>
-    </>
   )
 }
 
