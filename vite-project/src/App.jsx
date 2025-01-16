@@ -1,53 +1,52 @@
-import { useState } from 'react'
-// import './App.css'
+import React, { useState } from 'react'
 
 function App() {
-  const [initial, setInitial] = useState('');
-  const [data, setData] = useState([]);
-
-  const getInput = (event) => {
-    console.log(event.target.value);
-    setInitial(event.target.value);
+  const[color,setColor] = useState("RED");
+  const changeColor = ()=>{
+    setColor("BLUE")
   }
 
-  const getData = () => {
-    console.log("Task:"+initial);
-    let s = [...data,initial];
-    setData(s);
-    setInitial('');
-  }
-
-
- const deleteTask = (index) => {
-  let filterData = data.filter((curTask,indx) => {
-    return indx != index
+  // USESTATE USING OBJECT 
+  const[bike,setBike] = useState({
+    brand:"Honda",
+    color:"Black",
+    model:"Unicorn",
+    year:"2021",
   })
-  setData(filterData)
- }
 
+  const changeBike = () => {
+    setBike((prev) => {
+      return{...prev,brand:"Hero",
+        color:"Red",
+        model:"Passion Pro",
+        year:"2019"}
+    })
+  }
+
+  const [count,setCount]=useState(0)
+  const incCount = () => {
+    setCount((prev) => prev+1)
+    setCount((prev) => prev+1)
+    setCount((prev) => prev+1)
+    setCount((prev) => prev+1)
+  }
   return (
-    <div className='h-dvh flex  items-center flex-col bg-background text-white '>
-      <div className='w-1/2 h-10 flex gap-x-10 justify-center items-center mt-40'>
-        <input type="text" placeholder='Enter Task' className='w-4/5 text-black border-b-2 border-pink-400 h-10 rounded-sm' onChange={getInput} value={initial}/>
-        <button onClick={getData} className=' h-10 bg-addButton p-2 rounded-lg'>Add Task</button>
-      </div>
-      <div className='flex flex-col w-1/2'>
-        {data.map ((curVal,index) => {
-          return (
-            <>
-            <div>
-              <div className='flex bg-taskColor rounded-lg my-2 h-10 justify-center items-center pr-7'>
-              <p className='m-3 '>{curVal}</p>
-              <button className='ml-auto hover:bg-hoverColor hover:text-black hover:text-bold hover:px-1 hover:rounded-xl' onClick={() => deleteTask(index)}>Delete</button>
-              </div>
-            </div>
-            </>
-          )
-        })}
-      </div>
+    <>
+    <div className='flex justify-center items-center flex-col gap-y-10'>
+      <div className='text-center text-9xl'>USESTATE</div>
+      <h1 className='text-3xl'>My Favorite Color is {color}!</h1>
+      <button onClick={changeColor}>BLUE</button>
+
+
+      <h1>My {bike.brand}, It is {bike.color} {bike.model} from year {bike.year}</h1>
+      <button onClick={changeBike}>Change</button>
+
+      <h1>COUNT: {count}</h1>
+      <button onClick={incCount}>INC by 4</button>
     </div>
+
+    </>
   )
 }
 
 export default App
-
